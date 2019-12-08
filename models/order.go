@@ -170,7 +170,7 @@ func GetNumberOfOrdersInDB() (int, error) {
 	mongoDBSessionCopy := mongoDBSession.Copy()
 	defer mongoDBSessionCopy.Close()
 
-	log.Println("Querying MongoDB URL: ", mongoHost, " CosmosDB: ", isCosmosDb)
+	//log.Println("Querying MongoDB URL: ", mongoHost, " CosmosDB: ", isCosmosDb)
 
 	// get the Document in collection
 	mongoDBCollection := mongoDBSessionCopy.DB(mongoDatabaseName).C(mongoCollectionName)
@@ -183,7 +183,7 @@ func GetNumberOfOrdersInDB() (int, error) {
 		//}
 		printErr("Problem quering number of orders: ", mongoDBSessionError)
 	} else {
-		log.Println("Order count:", orderCount)
+		//slog.Println("Order count:", orderCount)
 		//success = true
 	}
 

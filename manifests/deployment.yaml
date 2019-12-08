@@ -14,7 +14,7 @@ spec:
       spec:
         containers:
         - name: captureorder
-          image: uniqueacrname.azurecr.io/captureorder:placeholdertag # replace with your own repository. Due to a bug, leave the :placeholdertag tag in there to allow the pipeline to replace it
+          image: aksworkshopacrdzomefukac.azurecr.io/captureorder:placeholdertag # replace with your own repository. Due to a bug, leave the :placeholdertag tag in there to allow the pipeline to replace it
           imagePullPolicy: Always
           readinessProbe:
             httpGet:
@@ -26,10 +26,10 @@ spec:
               path: /healthz
           resources:
             requests:
-              memory: "64Mi"
+              memory: "128Mi"
               cpu: "100m"
             limits:
-              memory: "128Mi"
+              memory: "256Mi"
               cpu: "500m"
           env:
           - name: TEAMNAME
@@ -44,10 +44,23 @@ spec:
               secretKeyRef:
                 name: mongodb
                 key: mongoUser
-          - name: MONGOPASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mongodb
-                key: mongoPassword
           ports:
           - containerPort: 80
+          volumeMounts:
+          - name: mongosecret
+            mountPath: /kvmnt
+            readOnly: true
+        volumes:
+        - name: mongosecret
+          flexVolume:
+            driver: "azure/kv"
+            secretRef:
+              name: kvcreds
+            options:
+              usepodidentity: "false"
+              keyvaultname: "aksworkshopkv"
+              keyvaultobjectnames: "mongo-password" # Name of Key Vault secret
+              keyvaultobjecttypes: secret
+              resourcegroup: "aksworkshoprg"
+              subscriptionid: "a394f05e-5ff8-409a-9422-7231ec09e03f"
+              tenantid: "e9b9fae5-52e6-4b22-99b0-dc14c8bc6e70"
