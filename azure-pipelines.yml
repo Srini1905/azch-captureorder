@@ -63,6 +63,7 @@ stages:
             displayName: Create secret for MongoDB
             inputs:
               action: createSecret
+              kubernetesServiceConnection: aksworkshopci-aksworkshop-ci-1576434585991
               secretName: mongodb
               secretType: generic
               namespace: $(k8sNamespace)
@@ -72,6 +73,7 @@ stages:
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
+              kubernetesServiceConnection: aksworkshopci-aksworkshop-ci-1576434585991
               namespace: $(k8sNamespace)
               manifests: $(System.ArtifactsDirectory)/manifests/*
               containers: '$(acrEndpoint)/captureorder:$(tag)'
