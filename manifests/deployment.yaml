@@ -51,21 +51,3 @@ spec:
                 key: mongoPassword
           ports:
           - containerPort: 80
-          volumeMounts:
-          - name: mongosecret
-            mountPath: /kvmnt
-            readOnly: true
-        volumes:
-        - name: mongosecret
-          flexVolume:
-            driver: "azure/kv"
-            secretRef:
-              name: kvcreds
-            options:
-              usepodidentity: "false"
-              keyvaultname: "aksworkshopkv"
-              keyvaultobjectnames: "mongo-password" # Name of Key Vault secret
-              keyvaultobjecttypes: secret
-              resourcegroup: "aksworkshoprg"
-              subscriptionid: "a394f05e-5ff8-409a-9422-7231ec09e03f"
-              tenantid: "e9b9fae5-52e6-4b22-99b0-dc14c8bc6e70"
