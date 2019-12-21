@@ -57,7 +57,7 @@ stages:
               containers: '$(acrEndpoint)/captureorder:$(tag)'
 - stage: DeployTEST
   displayName: Deploy to TEST stage
-  dependsOn: Build
+  #dependsOn: Build
 
   variables:
   - name: k8sNamespace # Kubernetes Namespace to deploy to. This variable is scoped to the DeployTest stage.
