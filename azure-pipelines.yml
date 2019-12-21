@@ -54,7 +54,7 @@ stages:
               action: deploy
               namespace: $(k8sNamespace)
               manifests: $(System.ArtifactsDirectory)/manifests/*
-              containers: '$(acrEndpoint)/captureorder:$(tag)'
+              containers: '$(acrEndpoint)/captureorder:38'
 - stage: DeployTEST
   displayName: Deploy to TEST stage
   #dependsOn: Build
@@ -95,4 +95,4 @@ stages:
               action: deploy
               namespace: $(k8sNamespace)
               manifests: $(System.ArtifactsDirectory)/manifests/*
-              containers: '$(acrEndpoint)/captureorder:$(tag)'
+              containers: '$(acrEndpoint)/captureorder:38'
