@@ -16,7 +16,7 @@ stages:
 
 - stage: DeployCI
   displayName: Deploy to CI stage
-  dependsOn: Build
+  #dependsOn: Build
 
   variables:
   - name: k8sNamespace # Kubernetes Namespace to deploy to. This variable is scoped to the DeployCI stage.
