@@ -8,15 +8,35 @@ variables:
   - name: acrEndpoint
     value: 'aksworkshopacrdzomefukac.azurecr.io' # replace with container registry endpoint
 
- # - name: tag
- #  value: '$(Build.BuildId)'
+  - name: tag
+    value: '$(Build.BuildId)'
 
 stages:
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build job
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: captureorder
+        dockerfile: '**/Dockerfile'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: $(tag)
 
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: 'manifests'
+        targetPath: 'manifests'
 
 - stage: DeployCI
   displayName: Deploy to CI stage
-  #dependsOn: Build
+  dependsOn: Build
 
   variables:
   - name: k8sNamespace # Kubernetes Namespace to deploy to. This variable is scoped to the DeployCI stage.
@@ -54,10 +74,10 @@ stages:
               action: deploy
               namespace: $(k8sNamespace)
               manifests: $(System.ArtifactsDirectory)/manifests/*
-              containers: '$(acrEndpoint)/captureorder:38'
+              containers: '$(acrEndpoint)/captureorder:$(tag)'
 - stage: DeployTEST
   displayName: Deploy to TEST stage
-  #dependsOn: Build
+  dependsOn: Build
 
   variables:
   - name: k8sNamespace # Kubernetes Namespace to deploy to. This variable is scoped to the DeployTest stage.
@@ -95,4 +115,4 @@ stages:
               action: deploy
               namespace: $(k8sNamespace)
               manifests: $(System.ArtifactsDirectory)/manifests/*
-              containers: '$(acrEndpoint)/captureorder:38'
+              containers: '$(acrEndpoint)/captureorder:$(tag)'
