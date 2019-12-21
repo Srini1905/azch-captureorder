@@ -81,7 +81,7 @@ stages:
 
   variables:
   - name: k8sNamespace # Kubernetes Namespace to deploy to. This variable is scoped to the DeployTest stage.
-    value: 'ci'
+    value: 'test'
       
   jobs:
   - deployment: DeployTEST
