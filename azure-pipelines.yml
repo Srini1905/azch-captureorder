@@ -9,7 +9,7 @@ variables:
     value: 'aksworkshopacrdzomefukac.azurecr.io' # replace with container registry endpoint
 
   - name: tag
-    value: '$(Build.BuildId)'
+    value: '52'
 
   - name: System.Debug
     value:  true
@@ -68,7 +68,7 @@ stages:
               action: deploy
               namespace: $(k8sNamespace)
               manifests: $(System.ArtifactsDirectory)/manifests/*
-              containers: '$(acrEndpoint)/captureorder:latest'
+              containers: '$(acrEndpoint)/captureorder:$(tag)'
 - stage: DeployTEST
   displayName: Deploy to TEST stage
   dependsOn: Build
@@ -109,4 +109,4 @@ stages:
               action: deploy
               namespace: $(k8sNamespace)
               manifests: $(System.ArtifactsDirectory)/manifests/*
-              containers: '$(acrEndpoint)/captureorder:latest'
+              containers: '$(acrEndpoint)/captureorder:(tag)'
