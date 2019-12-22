@@ -11,6 +11,9 @@ variables:
   - name: tag
     value: '$(Build.BuildId)'
 
+  - name: System.Debug
+    value:  true
+
 stages:
 - stage: Build
   displayName: Build stage
